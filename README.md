@@ -1,7 +1,9 @@
 # Advanced Javascript
 Comments and notes from Advanced Javascript course.
 
-## "Use Strict"
+## Basics
+
+### "Use Strict"
 It is a rule that turns Javascript into _strict_ mode, a feature introduced in ECMAScript 5.
 
 It is a string, so it doesn't invoke an error in older browsers running other versions of JS.
@@ -51,7 +53,7 @@ delete foo; // error: Delete of an unqualified identifier in strict mode.
 - Makes use of `eval` safer, by not leaking its instructions out of it and prevents of it being used as a variable name
 
 
-## Reference vs. Value
+### Reference vs. Value
 In general, if a variable has a primitive type, its *value* is used. If the varible is an object, its *reference* is used.
 
 That means that, when a primitive type is called, a copy of it is passed down or used, not the variable itself.
@@ -88,7 +90,7 @@ console.log(b) // returns {moo: false}
 ```
 
 
-## Rest operators
+### Rest operators
 Introduced in ECMAScript 6. It passes a variable number of arguments in a function as an array.
 
 ```javascript
@@ -100,7 +102,7 @@ function foo(word, ...options) {
 foo("one", 1, 2, 3);
 ```
 
-## Spread operator
+### Spread operator
 The notation of `...` is the same as the **rest operator**, but its use changes in different contexts. 
 
 Used in arrays, the user gets a copy of its items into another variable.
@@ -145,7 +147,7 @@ newFuntion(method, arr1); // word = "one" and "options" = [[1, 2, 3]]
 newFuntion(method, ...arr1); // word = "one" and "options" = [1, 2, 3]
 ```
 
-## Template Strings or template literals
+### Template Strings or template literals
 Strings that allow embedded expressions and multil-line strings. The notation to create a template string is to englobe the string between `\``.
 
 ```javascript
@@ -173,4 +175,42 @@ var age = 28;
 console.log(h1`Hello ${name}, you are ${age}`) // "Hello Mellina, you are an adult"
 ```
 
+----------------
 
+## Types and Equality
+The types in Javascript:
+- Boolean: true or false
+- Number: 1, 1.0
+- String: "a", 'a'
+- Null
+- Undefined
+- Object
+
+To know what type is a variable, one can use `typeof`
+
+```javascript
+console.log(typeof 1) // "number"
+```
+
+In Javascript, variables types are a dynamic, that is, its type can change along the way after being first declared.
+
+### Undefined, null and NaN
+**Undefined** is the type the Javascript engine uses for unitialized variables, missing paramethers in functions, unknown variables and properties in objects.
+
+**Null** is a developer/user defined value, usually to indicate a "no value". For JS, `null` is an object.
+
+**NaN** is the short for "not a number". It has the type of "number" and compared to itself `NaN == NaN` (and to anything) returns false. `isNaN(NaN)` doesn't behave as expected every time (it returns true to string values).
+
+To check if the variable is `NaN`, there is a trick:
+```javascript
+var a = NaN;
+
+console.log(a !== a) // only if this is NaN will it return true
+```
+
+### Equality
+`==` is equality and `===` is strict equality.
+
+In Equality, JS [coerce](https://www.freecodecamp.org/news/js-type-coercion-explained-27ba3d9a2839/) the values to check if they matches. Its output is very unpredictable.
+
+Strict equality checks the variables as they are presented, its type and value.

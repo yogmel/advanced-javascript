@@ -215,6 +215,7 @@ In Equality, JS [coerce](https://www.freecodecamp.org/news/js-type-coercion-expl
 
 Strict equality checks the variables as they are presented, its type and value.
 
+-------------
 
 ## Scopes and Variables
 Global variable it is declared outside functions and is accessible throughout the script. It is added to the object `window`.
@@ -353,9 +354,69 @@ console.log(foo[1]()); // prints 1
 console.log(foo[2]()); // prints 2
 ```
 
-----------------
+
+## Destructuring and looping
+Destructuring is the extraction of values into variables from object and arrays.
+
+```javascript
+const obj = {first: "Mell", last: "Yon", age: 20};
+const { first: firstName, age } = obj; // one can use the name of the property itself (age) for variable creation or use a custom one (firstName)
+
+const arr = ['a', 'b'];
+const [ x, y ] = arr;
+```
+
+Desctructuring can also be used in function parameters.
+
+```javascript
+const obj = {first: "Mell", last: "Yon", age: 20};
+
+function func({ first, age = 18, role = 'developer' }) { // default values can be assigned here too
+  console.log(first, age, role); // prints Mell 20 developer
+}
+
+func(obj)
+```
+
+### For Loops
+There four ways to do a for loop. The first is the classic one:
+
+```javascript
+var arr = [1, 2, 3];
+
+for (let i = 0; i < arr.length; i++) {
+  console.log(i);
+}
+```
+
+It is important to notice that `break`, `continue` and `return` works within the classic for loop. That does is not true for the `forEach()` method.
+
+```javascript
+// this has the same effect as the previous for loop
+arr.forEach((value) => {
+  console.log(value);
+})
+```
+
+Other ways to for loop are `for in`, for objects and `for of` for arrays. In those cases, `return` does not work.
+
+```javascript
+var obj = {prop1: 'one', prop2: 'two'};
+
+for (let prop in obj) {
+  console.log(prop) // prints prop1 and prop2
+}
+
+var arr = [1, 2, 3];
+
+for (let value of arr) {
+  console.log(value) // prints 1, then 2, then 3
+}
+```
+
+---------------
 
 
 ## Reference
 - [Closure](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36);
-- [Scope](https://spin.atomicobject.com/2014/10/20/javascript-scope-closures/)
+- [Scope](https://spin.atomicobject.com/2014/10/20/javascript-scope-closures/);

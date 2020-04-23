@@ -418,7 +418,7 @@ for (let value of arr) {
 ---------------
 
 ## This
-This is a keyword which refers to the actual scope. Outside any function or block, in the DOM, `this` refers to `window`.
+This is a keyword which refers to the actual scope. Outside any function or block, in the DOM, `this` refers to `window`. In strict mode, `this` default value is undefined.
 
 Depending on the calling **context**, `this` value changes.
 
@@ -495,7 +495,190 @@ const obj = {
 };
 
 obj.exFunc();
-``` 
+```
+
+--------------
+
+## Object Orientation
+### Prototype Chain
+Javascript will look for properties in the object, then its prototype. If the prototype points to another object, it will try to find there, and so on.
+
+```javascript
+var animal = {
+  kind: 'cat'
+}
+
+var mell = Object.create(animal, { food: { value: "banana" } }); // creating an object and linking it to animal object. The second parameter pass properties to mell
+
+console.log(mell.kind); // mell has the property of kind. Prints animal
+
+mell.kind = "human"; 
+
+console.log(mell.kind); // prints human
+console.log(animal.kind); // prints animal
+```
+
+### Classical and Prototypal inheritance
+Classical refers to the way Object Orientation works in older languages such as Java and C++. It is defined a class, which is a blueprint, from which other objects can be created.
+
+Prototypal is the way Javascript handles inheritance, building objects from existing ones. Therefore, in JS, there is the "Pseudo-Classical Pattern" (as there is no way to do a true classical one) and the "Prototypal Pattern".
+
+#### Pseudo-Classical Pattern (Constructor Pattern)
+There is no way to create a classical Class in Javascript, but we can mimic it.
+
+```javascript
+"use strict";
+
+function Person(firstName, lastName){
+  this.firstName = firstName;
+  this.lastName = lastName;
+  this.fullName = function() {
+    return this.firstName + ' ' + this.lastName;
+    // or return firstName + ' ' + lastName to make it unmutable after creating the instance
+  }
+}
+
+// we can add new properties and methods to the Person
+Person.prototype.introduction = function() {
+  return 'Hello ' + this.fullName();
+}
+
+var mell = new Person("mell", "yon"); // a new instance mell is created pointed to the Person prototype
+console.log(mell); // Person {firsName: "mell", lastName: "yon"}
+console.log(mell.fullName());
+console.log(mell.introduction());
+```
+
+New pseudo-classes can be created and be inherited from another one.
+
+```javascript
+function Professional(honorific, firstName, lastName) {
+  Person.call(this, firstName, lastName); // get the properties of the Person, but does not create a inheritance link
+  this.honorific = honorific;
+}
+
+Professional.prototype = Object.create(Person.prototype); // this creates the inheritance link
+
+var developer = new Professional("dev", "mell", "yon");
+
+console.log(developer.fullName()); // Javascript tries to find the method in the developer object. When it doesn't find, it looks into the pointed Person pseudo-class.
+```
+
+#### Prototype Pattern
+A more natural Javascript way to do Object Orientation, using the tools it has natively. There is no need to create a constructor function that mimics the classical inheritance.
+
+```javascript
+var Person = {
+  init: function(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    return this;
+  }
+  fullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+}
+
+var mell = Object.create(Person);
+mell.init("mell", "yon");
+```
+
+Another way to create an object and pass on its properties is via the `Object.create()` method.
+
+```javascript
+var Person = {
+  fullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+}
+
+var mell = Object.create(Person, {
+  firstName: {
+    value: 'mell'
+  },
+  lastName: {
+    value: 'yon'
+  }
+});
+```
+
+Another method is creating a "factory" type function, which handles the creation and passing the properties of the new instance.
+
+```javascript
+var Person = {
+  fullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+}
+
+function PersonFactory(firstName, lastName) {
+  var person = Object.create(Person);
+  person.firstName = firstName;
+  person.lastName = lastName;
+  return person;
+}
+
+var mell = PersonFactory("mell", "yon");
+```
+
+To create a new prototype with inheritance, one can choose one of the three methods before mentioned and create that link.
+
+#### ES6 Class and extends
+`class` is a feature implemented in ES6 (or ECMAScript 2015). It does not create another kind of pattern, rather it defines another way to do prototype pattern.
+
+Getters and setters methods are available, which creates a 'fake' property.
+
+```javascript
+class Person {
+  constructor(firstName, lastName) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  get firstName() {
+    return this.firstName;
+  }
+
+  set firstName(name) {
+    if(name === "") {
+      console.error("name cannot be blank");
+    } else {
+      this.firstName = name;
+    }
+    return;
+  }
+
+  fullName() {
+    return `${this.firstName} ${this.lastName}`
+  }
+
+  whoAreYou() {
+    return `I'm ${this.fullName}`
+  }
+}
+
+const mell = new Person("mell", "yon"); // create a new instance
+console.log(mell.fullName());
+console.log(mell.firstName); // as getter, there is no need to ()
+mell.firstName = "mayu";
+console.log(mell.firstName);
+```
+
+`extends` is a keyword which created a new object, with an inheritance.
+
+```javascript
+class Student extends Person {
+  constructor(firstName, lastName, course){
+    super(firstName, lastName); // call super() before declaring other properties
+    this.course = course;
+  }
+
+  whoAreYou() {
+    return `${super.whoAreYou()} and I'm studying ${this.course}`
+  }
+}
+```
+
 
 ---------------
 

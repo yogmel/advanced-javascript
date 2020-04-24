@@ -868,6 +868,17 @@ In the network Devtools tab, this does not appear under XHR, because is not a GE
 
 
 ## Events
+In the DOM, elements are created starting to the `window` object, as in a tree structure. When an event is fired in an element, two phases occur: one triggering from the bottom to the top, and the second from the top to the bottom.
+
+For example, if the structure is `window > document > body > button-one > button-two`, then the first phase, the "Event Capturing Phase", triggers the window, then document, body and so on. The second phase, the "Event Bubbling Phase", triggers from the button-one, to button-two, body, document and window.
+
+That means that and event triggers **twice**. However, when using `.addEventListener(event, callback, eventPhase)`, by default, only the event in "Event Bubbling Phase" is trigger. If `eventPhase` is set to true, then the event in "Event Capturing Phase" is triggered.
+
+### stopPropagation() and preventDefault()
+`stopPropagation()` stops the propagation of events in the element of the tree, through the phases seen before.
+
+`preventDefault()` does not perform the default action of an element. That means, for example, that a checkbox will not be checked when clicked, if this method is used. This does not stop the propagation of events.
+
 
 ---------------
 

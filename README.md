@@ -4,9 +4,11 @@ Comments and notes from Advanced Javascript course.
 ## Basics
 
 ### "Use Strict"
-It is a rule that turns Javascript into _strict_ mode, a feature introduced in ECMAScript 5.
+[Strict Mode - MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode)
 
-It is a string, so it doesn't invoke an error in older browsers running other versions of JS.
+It is a rule that turns Javascript into _strict_ mode, a feature introduced in ECMAScript 5. Strict mode is an opt-in mode, contrary to "sloppy mode" (unofficial term to non-strict mode). Both modes can coexist.
+
+It is a _string_, so it doesn't invoke an error in older browsers running other versions of JS.
 
 **Usage**
 Add the `"use strict";` string at the beginning of the script or inside a function.
@@ -21,7 +23,8 @@ function newFunction() {
 ```
 
 **Motivation**
-Strict mode helps to debug code, invoking erros which were silent before.
+Strict mode helps to debug code, invoking errors which were silent before.
+
 - Prevents variables to be called if they were not declared before.
 
 This causes an error:
@@ -35,13 +38,14 @@ This does not cause an error:
 ```javascript
 "use strict";
 
-var newVar = 1; // var declaration
+var newVar = 1; // var declaration and initialization
 
-newVar = 0; // var redefinition
+newVar = 0; // var assignment
 ```
 
-- Prevents use of [reserved keywords](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords)
-- Prevents deletion of functins, variables and function arguments
+- Prevents the use of [reserved keywords](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords)
+
+- Prevents deletion of functions, variables and function arguments
 
 ```javascript
 "use strict";
@@ -54,9 +58,9 @@ delete foo; // error: Delete of an unqualified identifier in strict mode.
 
 
 ### Reference vs. Value
-In general, if a variable has a primitive type, its *value* is used. If the varible is an object, its *reference* is used.
+In general, if a variable has a **primitive** type, its *value* is passed. If the variable is an **object** or an **array**, its *reference* is passed.
 
-That means that, when a primitive type is called, a copy of it is passed down or used, not the variable itself.
+That means that, when a primitive type is called, a _copy_ of it is passed down or used, not the type itself. If the original variable is changed, that has no effect on the passed value and vice-versa.
 
 ```javascript
 "use strict";
@@ -71,9 +75,9 @@ foo(a); // it actually is foo(true), a's value, or its copy
 console.log(a) // returns true
 ```
 
-Whereas, if the variable is an object, a reference of it is passed down.
+Whereas, if the variable is an object or an array, a reference of it is passed down.
 
-However, one can not change/reassign the object itself, or where the object, points to, just its **properties**.
+However, if the object/array is reassigned, then it loses its reference. Only changing its **properties** will keep its reference.
 
 ```javascript
 "use strict";
@@ -81,7 +85,6 @@ However, one can not change/reassign the object itself, or where the object, poi
 var b = {};
 
 function foo(b) {
-  b = {'moo': 'too'}  // this does not work
   b.moo = false;
 }
 
@@ -90,8 +93,12 @@ console.log(b) // returns {moo: false}
 ```
 
 
-### Rest operators
-Introduced in ECMAScript 6. It passes a variable number of arguments in a function as an array.
+### Rest operators (parameters)
+- [Rest parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters)
+
+Introduced in ECMAScript 6. It passes an indefinite number of arguments in a function as an array.
+
+The last or all of the parameters can be _rest parameters_, but not the first of them.
 
 ```javascript
 function foo(word, ...options) {
@@ -102,8 +109,10 @@ function foo(word, ...options) {
 foo("one", 1, 2, 3);
 ```
 
-### Spread operator
-The notation of `...` is the same as the **rest operator**, but its use changes in different contexts. 
+### Spread operator (syntax)
+- [Spread syntax - MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
+
+The notation of `...` is the same as the **rest operator**, but its uses changes in contexts. 
 
 Used in arrays, the user gets a copy of its items into another variable.
 
@@ -118,7 +127,7 @@ var arr3 = [4, 5, ...arr1, 6];
 console.log(arr3) // [4, 5, 1, 2, 3, 6]
 ```
 
-It is also important to note that it copies the array to another, not referecing it.
+It is also important to note that it copies the array to another, not referencing it.
 
 ```javascript
 var arr1 = [1, 2, 3];
@@ -147,7 +156,9 @@ newFuntion(method, arr1); // word = "one" and "options" = [[1, 2, 3]]
 newFuntion(method, ...arr1); // word = "one" and "options" = [1, 2, 3]
 ```
 
-### Template Strings or template literals
+### Template literals (template strings)
+- [Template literals - MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
+
 Strings that allow embedded expressions and multil-line strings. The notation to create a template string is to englobe the string between `\``.
 
 ```javascript

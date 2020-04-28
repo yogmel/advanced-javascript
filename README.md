@@ -480,7 +480,10 @@ for (let value of arr) {
 ---------------
 
 ## This
-This is a keyword which refers to the actual scope. Outside any function or block, in the DOM, `this` refers to `window`. In strict mode, `this` default value is undefined.
+
+- [this - MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
+
+This is a keyword that refers to the actual scope. Outside any function or block, in the DOM, `this` refers to `window`. In strict mode, `this` default value is undefined.
 
 Depending on the calling **context**, `this` value changes.
 
@@ -504,7 +507,7 @@ obj.checkThis(); // prints Object
 ```
 
 ### Call, bind, apply
-Those are methods that can be used in initialized functions. `call()` and `apply()` execute the function, and specify its context and parameters. `call()` is used for functions with fixed number of parameters and `apply()`, for functions with dynamic number of parameters.
+Those are methods that can be used in initialized functions. `call()` and `apply()` execute the function, and specify its context and parameters. `call()` is used for functions with a fixed number of parameters and `apply()`, for functions with a dynamic number of parameters.
 
 ```javascript
 const firstExample = function (b, c) {
@@ -527,7 +530,7 @@ var numbers = [ 1, 2, 3, 56, 8, 3 ];
 secondExample(null, numbers); // pass null because the context does not matter
 ```
 
-`bind()` is used in a function initialization to bind a context to it, so it will be consistent when called afterwards.
+`bind()` is used in a function initialization to bind a context to it, so it will be consistent when called afterward.
 
 ```javascript
 const bindExample = function(){
@@ -543,7 +546,7 @@ bindExample(); // prints Number { 2 }
 ```
 
 ## Arrow functions
-It is another way to write functions. It also stabelizes the `this` context, by always using the context where it initializes. It is important to know this, because arrow function may not work as expected because of its context setting.
+It is another way to write functions. It also stabilizes the `this` context, by always using the context where it initializes (the value of the enclosing lexical context). It is important to know this, because arrow function may not work as expected because of its context setting.
 
 ```javascript
 const obj = {
@@ -558,6 +561,8 @@ const obj = {
 
 obj.exFunc();
 ```
+
+Also, the before-mentioned methods, `call()`, `apply()` and `bind()` do not change the context when used in an arrow function.
 
 --------------
 

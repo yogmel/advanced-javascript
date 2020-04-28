@@ -237,7 +237,10 @@ Strict equality checks the data without the type conversion.
 -------------
 
 ## Scopes and Variables
-Global variable it is declared outside functions and is accessible throughout the script. It is added to the object `window`.
+
+- [Scopes and Closures - CSS Tricks](https://css-tricks.com/javascript-scope-closures/)
+
+A global variable is declared outside functions and is accessible throughout the script. The `window` object is also global.
 
 In the example below, both the variable `one` and the property `moo` are global.
 ```javascript
@@ -246,7 +249,7 @@ var one = 'one';
 window.moo = 'two';
 ```
 
-Local or function variable only exists within the function it was declared.
+Local, block or function scope variables only exist within the scope they were declared.
 
 ```javascript
 function moo() {
@@ -254,17 +257,17 @@ function moo() {
   console.log(foo) // prints 1
 }
 
-console.log(foo) // error
+console.log(foo) // error, the foo variable does not exist outside the function scope
 ```
 
-Variables initiated with `var` in for loops are not local though. They are declared in the global scope.
+Variables initiated with `var` in for loops are not local, though. They are declared in the global scope. That does not happen with `let` and `const`.
 
 ### Let and const
 To declare new variables, the word `var` can be used, but two new keywords were introduced: `let` and `const`.
 
 These are called block scope variables, so they exists only within the block they were created. That improves performance and prevents data leakage.
 
-`let` lets the variable to be reassigned and `const` does not.
+`let` lets the variable to be reassigned and `const` does not. Although objects properties declared in `const` can be changed.
 
 In for loops, if the variable is declared with `let`, its value exists only within that block.
 
@@ -275,15 +278,15 @@ for (var i = 0; i < 5; i++) {
 
 console.log(i) // prints 5
 
-for (let i = 0; i < 5; i++) {
-  console.log(i);
+for (let j = 0; j < 5; j++) {
+  console.log(j);
 }
 
-console.log(i) // error, because i doesn't exist outside the for loop block
+console.log(j) // error, because i doesn't exist outside the for loop block
 ```
 
 ### Hoisting
-When using `"use strict"`, the variable and function needs to be declared before using. Variable or function hoisting is what JS does in the compile phase, moving their declarations to the top of the file.
+When using `"use strict"`, the variable and function needs to be declared and initialized before using. Variable or function hoisting is what JS does in the compile phase, moving their declarations to the top of the file.
 
 When we write this code:
 ```javascript
@@ -302,8 +305,26 @@ console.log(a); // undefined
 a = 1; // initialization
 ```
 
+Function declarations work, as the both declaration and initialization are hoisted. That is not true with functions expressions.
+
+```javascript
+sum(1, 3); // prints 4
+
+function sum(a, b) {
+  return a + b;
+}
+
+subtract(4, 2); // error
+
+const subtract = function (a, b) {
+  return a - b;
+}
+```
+
 ### Scope Chain
-Javascript will try to find the variable in the innermost scope first, and then goes outwards until it finds it. That is possible because of lexical scope, meaning that variables declared outside a function can be read in a another function defined after that, but the opposide is not true.
+Javascript will try to find a variable in the innermost scope first and then goes outwards until it finds it. That is possible because of lexical scope, meaning that variables declared outside a function can be read in another function defined after that, but the opposite is not true.
+
+- [Scope](https://spin.atomicobject.com/2014/10/20/javascript-scope-closures/);
 
 ```javascript
 var myvar = 1;
@@ -317,9 +338,9 @@ goo();
 ```
 
 ### IIFE and closures
-Is short for Immediately Invoked Function Expression. It is an expression for an annonymous function that is automatically executed.
+IIFE Is short for Immediately Invoked Function Expression. It is an expression for an anonymous function that is automatically executed.
 
-It can be used to prevent variable scope leakage into other scripts.
+It prevents variable scope leakage into other scopes and scripts (if multiple scripts are used).
 
 ```javascript
 (function() {
@@ -329,6 +350,7 @@ It can be used to prevent variable scope leakage into other scripts.
 
 Closure is a function that exists within an lexical environment (its surrounding state), and can access its references. In simpler terms, it is a function inside another function.
 
+- [Closure](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36);
 
 ```javascript
 function sayHello(name) {
@@ -344,7 +366,6 @@ sayMell(); // prints "Hello Mell"
 
 It is important to know that it is passed down the value of the variable, not its refecence. A tricky example happens in a for loop:
 
-
 ```javascript
 var foo = [];
 for (var i = 0; i < 10; i++) {
@@ -358,7 +379,7 @@ console.log(foo[2]()); // prints 10
 
 The reason why it only prints 10 is that, by the time the closure is created, the for loop is already done. And `i` final value is 10.
 
-To solve this, we can use IIFE to keep the variables within that scope and passing a paramether to it, to make sure its value changes every time.
+To solve this, we can use IIFE to keep the variables within that scope and passing a parameter to it, to make sure its value changes every time.
 
 ```javascript
 var foo = [];
@@ -903,6 +924,4 @@ That means that and event triggers **twice**. However, when using `.addEventList
 
 
 ## Reference
-- [Closure](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36);
-- [Scope](https://spin.atomicobject.com/2014/10/20/javascript-scope-closures/);
 - [Callback Hell](http://callbackhell.com/);

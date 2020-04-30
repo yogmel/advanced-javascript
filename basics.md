@@ -1,5 +1,7 @@
 ## Basics
 
+[**Go back to Summary**](README.MD#summary);
+
 - [Use Strict](#use-strict);
 - [Reference vs. Value](#reference-vs-value);
 - [Rest operators (parameters)](#rest-operators-parameters);

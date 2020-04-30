@@ -681,7 +681,7 @@ var mell = Object.create(Person, {
 });
 ```
 
-Another method is creating a "factory" type function, which handles the creation and passing the properties of the new instance.
+Another method is creating a "factory" type function, which handles the creation and passing of the properties of the new instance.
 
 ```javascript
 var Person = {
@@ -703,7 +703,7 @@ var mell = PersonFactory("mell", "yon");
 To create a new prototype with inheritance, choose one of the three methods before mentioned and create that link.
 
 #### ES6 Class and extends
-`class` is a feature implemented in ES6 (or ECMAScript 2015). It does not create another kind of pattern, rather it defines another way to do prototype pattern.
+`class` is a feature implemented in ES6 (or ECMAScript 2015). It does not create another kind of pattern, rather it defines another way to do the prototype pattern.
 
 Getters and setters methods are available, which creates a 'fake' property.
 
@@ -759,7 +759,9 @@ class Student extends Person {
 ```
 
 ## Asynchronous Programming
-Async operations are not executed in order. They are mostly used when perfoming an API request or downloading some media (videos, audio etc).
+Async operations are not executed in order. They are mostly used when performing an API request or downloading some media (videos, audio, etc).
+
+- [Asynchronous Programming - Eloquent Javascript](https://eloquentjavascript.net/11_async.html)
 
 ### Callback
 Callback is a function that is passed as an argument to another one. Callbacks are not async.
@@ -782,7 +784,14 @@ doAsyncTask((err, data) => { // first parameter is the error
 
 When a function is async, it can be hard to know in what order it will execute. For that reason, a **callback hell** can happen. That is, functions being nested one after another, defining the calls' order.
 
+- [Callback Hell](http://callbackhell.com/)
+
 ### Promises
+
+- [Promise - MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+
+- See also: [Fetch - MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+
 Promises are async by default. It handles the problem of the callback hell, by representing a completion or failure of an async operation. `.then()` can be called to perform an operation after the promise is resolved.
 
 ```javascript
@@ -804,9 +813,9 @@ doAsyncTask().then(
 );
 ```
 
-Promises also can be chained. The returned value will be sent as a parameter to the second promise in the chain.
+Promises also can be chained. The returned value will be sent as a **parameter** to the second promise in the chain.
 
-When an error occurs, it will pass it over the chain until it finds an error handler, so there is no need to add error handlers in all steps of it. `throw` also works, but more usually it is used the `.catch()` method.
+When an error occurs, it will pass it over the chain until it finds an *error handler*, so there is no need to add error handlers in all steps of it. `throw` also works, but more usually it is used the `.catch()` method.
 
 An optional method `.finally()` can be called at the end of the chain, and the operation inside will execute either it is resolved or rejected.
 
@@ -875,7 +884,7 @@ let asyncFunc = async function() {
 asyncFunc().then(v => console.log(v)) // prints 3
 ```
 
-Error handling with promises and `await` is intuitive, as when the promise is rejected, it throws an error which can be caught.
+Error handling with promises and `await` is intuitive, as when the promise is rejected, it throws an error that can be caught.
 
 ```javascript
 const doAsyncTask = () => Project.reject('error'); // throws an error
@@ -889,7 +898,7 @@ let asyncFunc = async function() {
   }
 }
 
-asyncFunc()
+asyncFunc();
 ```
 
 ---------------
@@ -898,25 +907,31 @@ asyncFunc()
 ## Networking
 
 ### CORS
+
+- [CORS - MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+
 By default, browsers reject resources comming from origins that are not the current one. For example, if the host website is `foo.com` and it requests a script from `moo.com`, this request is rejected, as they are not from the same origin.
 
 **CORS**, or Cross-Origin Resource Sharing, is a mechanism that allow requests from different origins.
 
 #### Requests
-When performing a request, the browser sends the origin to the target resource. It then, returns a header property of `Access-Control-Allow-Origin`. Its value has to match the origin or use the "all" value, `*`. If the value is different than the origin, then the request response is rejected.
+When performing a request, the browser sends headers with the origin to the target resource. It then, returns a header property of `Access-Control-Allow-Origin`. Its value has to match the origin or use the "all" value, `*`. If the value is different than the origin, then the request response is rejected.
 
-For GET requests, only one back-and-forth response is needed. But for others that might change the server, an additional step is added upfront, which is called the _preflight request_.
+For GET (HEAD and POST) requests, only one back-and-forth response is needed (they are "simple requests"). But for other methods and header properties that might change the server, an additional step is added upfront, which is called the _preflight request_.
 
 A preflight send a OPTIONS request, with the origin and the `Access-Control-Request-Method`, whose value can be PUT, DELETE, POST etc. The response's values have to match the origin's ones.
 
-If the response is successful, then the request with the chosen method will be performed.
+If the response is successful, a subsequent request with the chosen method will be performed.
 
 An important note here is that if the request has failed because of a CORS issue, then the **server** has to change its response headers.
 
 ### JSONP
-JSONP is a solution for GET request that does not need to handle with cross origin resources. It is a `.js` file that calls a function and returns an array of objects (similiar to an json output).
 
-The developer has to create a function with the same name as the one called in the jsonp file.
+- [JSONP - W3Schools](https://www.w3schools.com/js/js_json_jsonp.asp)
+
+JSONP is a solution for GET request that does not need to handle with cross origin resources. It is a `.js` file that calls a function and returns an array of objects (similiar to a json output).
+
+The developer has to create a function with the same name as the one called in the JSONP file.
 
 in `index.html`
 ```html
@@ -940,27 +955,27 @@ callbackFunction([
 ])
 ```
 
-In the network Devtools tab, this does not appear under XHR, because is not a GET request.
+Because it is not an `XMLHttpRequest`, in the network Devtools tab, this does not appear under XHR category.
 
 
 ---------------
 
 
 ## Events
-In the DOM, elements are created starting to the `window` object, as in a tree structure. When an event is fired in an element, two phases occur: one triggering from the bottom to the top, and the second from the top to the bottom.
 
-For example, if the structure is `window > document > body > button-one > button-two`, then the first phase, the "Event Capturing Phase", triggers the window, then document, body and so on. The second phase, the "Event Bubbling Phase", triggers from the button-one, to button-two, body, document and window.
+- [EventListener() - MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener)
 
-That means that and event triggers **twice**. However, when using `.addEventListener(event, callback, eventPhase)`, by default, only the event in "Event Bubbling Phase" is trigger. If `eventPhase` is set to true, then the event in "Event Capturing Phase" is triggered.
+In the DOM, elements are created starting to the `window` object, in a tree structure. When an event is fired in an element, two phases occur: one triggering from the bottom to the top, and the second from top to bottom.
+
+- [Event.eventPhase - MDN Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Event/eventPhase#Event_phase_constants)
+
+For example, if the structure is `window > document > body > button-one > button-two`, then the first phase, the "Event Capturing Phase", triggers the window, then document, body and so on.
+
+The second phase, the "Event Bubbling Phase", triggers from the button-one, to button-two, body, document and window.
+
+That means that and events trigger **twice**. However, when using `.addEventListener(event, callback, useCapture)`, by default, only the event in "Event Bubbling Phase" is trigger. If `useCapture` is set to true, then the event in "Event Capturing Phase" is triggered.
 
 ### stopPropagation() and preventDefault()
 `stopPropagation()` stops the propagation of events in the element of the tree, through the phases seen before.
 
-`preventDefault()` does not perform the default action of an element. That means, for example, that a checkbox will not be checked when clicked, if this method is used. This does not stop the propagation of events.
-
-
----------------
-
-
-## Reference
-- [Callback Hell](http://callbackhell.com/);
+`preventDefault()` prevents the default action of an element of being executed. That means, for example, that a checkbox will not be checked when clicked, if this method is used. This does not stop the propagation of events.

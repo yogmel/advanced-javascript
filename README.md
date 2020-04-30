@@ -568,7 +568,12 @@ Also, the before-mentioned methods, `call()`, `apply()` and `bind()` do not chan
 
 ## Object Orientation
 ### Prototype Chain
-Javascript will look for properties in the object, then its prototype. If the prototype points to another object, it will try to find there, and so on.
+
+- [Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)
+
+Each object has a private property, which holds a link to another object (its **prototype**). This prototype has a prototype of its own, and so on, until an object is reached with null as its prototype. 
+
+When trying to access a property of an object, the property will not only be sought on the object but on the **prototype of the object**. If the prototype points to another one, it will try to find there, and so on.
 
 ```javascript
 var animal = {
@@ -582,16 +587,20 @@ console.log(mell.kind); // mell has the property of kind. Prints animal
 mell.kind = "human"; 
 
 console.log(mell.kind); // prints human
-console.log(animal.kind); // prints animal
+console.log(animal.kind); // prints cat
 ```
 
 ### Classical and Prototypal inheritance
 Classical refers to the way Object Orientation works in older languages such as Java and C++. It is defined a class, which is a blueprint, from which other objects can be created.
 
-Prototypal is the way Javascript handles inheritance, building objects from existing ones. Therefore, in JS, there is the "Pseudo-Classical Pattern" (as there is no way to do a true classical one) and the "Prototypal Pattern".
+Prototypal is the way Javascript handles inheritance, building objects from existing ones.
+
+Therefore, in JS, there is the "Pseudo-Classical Pattern" (as there is no way to do a true classical one) and the "Prototypal Pattern".
 
 #### Pseudo-Classical Pattern (Constructor Pattern)
-There is no way to create a classical Class in Javascript, but we can mimic it.
+There is no way to create a classical Class in Javascript, but we can mimic it, with a constructor. A constructor, in JS, a function that is called with the `new` operator.
+
+Calling a function with the `new` operator returns an object that is an instance of the function. 
 
 ```javascript
 "use strict";
@@ -632,7 +641,7 @@ console.log(developer.fullName()); // Javascript tries to find the method in the
 ```
 
 #### Prototype Pattern
-A more natural Javascript way to do Object Orientation, using the tools it has natively. There is no need to create a constructor function that mimics the classical inheritance.
+A more natural Javascript way to do Object Orientation, using the tools it has natively. There is no need to create a constructor function.
 
 ```javascript
 var Person = {
@@ -645,8 +654,11 @@ var Person = {
     return this.firstName + " " + this.lastName;
   }
 }
+// Person ---> Object.prototype ---> null
 
 var mell = Object.create(Person);
+// mell ---> Person ---> Object.prototype ---> null
+
 mell.init("mell", "yon");
 ```
 
@@ -688,7 +700,7 @@ function PersonFactory(firstName, lastName) {
 var mell = PersonFactory("mell", "yon");
 ```
 
-To create a new prototype with inheritance, one can choose one of the three methods before mentioned and create that link.
+To create a new prototype with inheritance, choose one of the three methods before mentioned and create that link.
 
 #### ES6 Class and extends
 `class` is a feature implemented in ES6 (or ECMAScript 2015). It does not create another kind of pattern, rather it defines another way to do prototype pattern.
@@ -702,11 +714,11 @@ class Person {
     this.lastName = lastName;
   }
 
-  get firstName() {
+  get getFirstName() {
     return this.firstName;
   }
 
-  set firstName(name) {
+  set setFirstName(name) {
     if(name === "") {
       console.error("name cannot be blank");
     } else {
@@ -726,8 +738,8 @@ class Person {
 
 const mell = new Person("mell", "yon"); // create a new instance
 console.log(mell.fullName());
-console.log(mell.firstName); // as getter, there is no need to ()
-mell.firstName = "mayu";
+console.log(mell.getFirstName); // as getter, there is no need to ()
+mell.setFirstName = "mayu";
 console.log(mell.firstName);
 ```
 

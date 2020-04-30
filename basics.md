@@ -1,6 +1,6 @@
 ## Basics
 
-[**Go back to Summary**](README.MD#summary);
+[**Go back to Summary**](README.md#summary);
 
 - [Use Strict](#use-strict);
 - [Reference vs. Value](#reference-vs-value);

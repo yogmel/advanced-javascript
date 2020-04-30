@@ -1,5 +1,6 @@
 ## Types and Equality
-[**Go back to Summary**](README.MD#summary);
+
+[**Go back to Summary**](README.md#summary);
 
 - [Undefined, null and NaN](#undefined-null-and-nan);
 - [Equality](#equality).
